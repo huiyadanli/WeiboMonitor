@@ -1,0 +1,16 @@
+D:\编程\Projects\CSharp4\SinaLogin\SinaLogin\obj\Debug\SinaLogin.csprojResolveAssemblyReference.cache
+D:\编程\Projects\CSharp4\SinaLogin\SinaLogin\obj\Debug\SinaLogin.Properties.Resources.resources
+D:\编程\Projects\CSharp4\SinaLogin\SinaLogin\obj\Debug\SinaLogin.csproj.GenerateResource.Cache
+D:\编程\Projects\CSharp4\SinaLogin\SinaLogin\obj\Debug\Interop.MSScriptControl.dll
+D:\编程\Projects\CSharp4\SinaLogin\SinaLogin\obj\Debug\SinaLogin.csproj.ResolveComReference.cache
+D:\编程\Projects\CSharp4\SinaLogin\SinaLogin\bin\Debug\SinaLogin.exe
+D:\编程\Projects\CSharp4\SinaLogin\SinaLogin\bin\Debug\SinaLogin.pdb
+D:\编程\Projects\CSharp4\SinaLogin\SinaLogin\bin\Debug\Interop.MSScriptControl.dll
+D:\编程\Projects\CSharp4\SinaLogin\SinaLogin\obj\Debug\SinaLogin.exe
+D:\编程\Projects\CSharp4\SinaLogin\SinaLogin\obj\Debug\SinaLogin.pdb
+D:\编程\Projects\CSharp4\SinaLogin\SinaLogin\obj\Debug\SinaLogin.FormMain.resources
+D:\编程\Projects\CSharp4\SinaLogin\SinaLogin\bin\Debug\sinaSSOEncoder
+D:\编程\Projects\CSharp4\WeiboMonitor\SinaLogin\obj\Debug\Interop.MSScriptControl.dll
+D:\编程\Projects\CSharp4\WeiboMonitor\SinaLogin\obj\Debug\SinaLogin.csproj.ResolveComReference.cache
+D:\编程\Projects\CSharp4\WeiboMonitor\SinaLogin\obj\Debug\SinaLogin.exe
+D:\编程\Projects\CSharp4\WeiboMonitor\SinaLogin\obj\Debug\SinaLogin.pdb
