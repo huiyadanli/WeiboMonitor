@@ -1,6 +1,7 @@
 ﻿using HtmlAgilityPack;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -52,14 +53,12 @@ namespace WeiboMonitor
         /// </summary>
         public string Location { get; set; }
 
-        private string homeFeedHTML; //提取微博正文的HTML
-
 
         public WeiboPage(string html)
         {
             OriginHTML = html;
             GetConfig();
-            GetWeiboText();
+            GetAllFeeds();
         }
 
         /// <summary>
@@ -87,9 +86,9 @@ namespace WeiboMonitor
         }
 
         /// <summary>
-        /// 获取微博正文内容
+        /// 获取该页面各条微博
         /// </summary>
-        private void GetWeiboText()
+        public List<WeiboFeed> GetAllFeeds()
         {
             //微博正文内容 在下面这个字符串所在的那一行
             string searchStr = "<script>FM.view({\"ns\":\"pl.content.homeFeed.index\",\"domid\":\"Pl_Official_MyProfileFeed";
@@ -111,9 +110,25 @@ namespace WeiboMonitor
             //使用 HtmlAgilityPack 解析HTML
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(viewJson.html);
-            HtmlNodeCollection nodes = doc.DocumentNode.ChildNodes; //.SelectSingleNode("/div/div[2]/div[1]/div[3]/div[3]");
+            //HtmlNodeCollection nodes = doc.DocumentNode.ChildNodes; //.SelectSingleNode("/div/div[2]/div[1]/div[3]/div[3]");
 
+            HtmlNode topNode = doc.DocumentNode.ChildNodes[1];
+            List<WeiboFeed> wbFeedList = new List<WeiboFeed>();
+            foreach (HtmlNode feedListItem in topNode.ChildNodes)
+            {
+                if (feedListItem.Attributes.Contains("action-type") && feedListItem.Attributes["action-type"].Value == "feed_list_item")
+                {
+                    string mid = feedListItem.Attributes["mid"].Value;
+                    string username = feedListItem.SelectSingleNode("div[1]/div[@class='WB_detail']/div[1]/a[1]").InnerHtml;
+                    string time = feedListItem.SelectSingleNode("div[1]/div[@class='WB_detail']/div[2]/a[1]").Attributes["title"].Value;
+                    string content = feedListItem.SelectSingleNode("div[1]/div[@class='WB_detail']/div[3]").InnerHtml;
+                    
+                    WeiboFeed wbFeedTmp = new WeiboFeed(mid, username, time, content);
+                    wbFeedList.Add(wbFeedTmp);
+                }
+            }
 
+            return wbFeedList;
         }
     }
 }

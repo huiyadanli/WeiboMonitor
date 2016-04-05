@@ -52,7 +52,8 @@ namespace WeiboMonitor
                     needPIN = false;
                     labelState.Text = "登录结果：" + wb.End(txtPIN.Text.Trim());
                     btnStart.Text = "重新登陆";
-                    txtRet.Text = wb.Get("http://weibo.com/5237923337/");
+                    txtRet.Text = wb.Get("http://weibo.com/quanqiuyulequshi/");
+                    WeiboPage wbPage = new WeiboPage(txtRet.Text);
                 }
                 else
                 {

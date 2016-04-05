@@ -78,6 +78,7 @@
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
     <Compile Include="HttpHelper.cs" />
+    <Compile Include="WeiboFeed.cs" />
     <Compile Include="WeiboPage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
