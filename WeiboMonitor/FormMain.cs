@@ -11,10 +11,8 @@ namespace WeiboMonitor
 {
     public partial class FormMain : Form
     {
-        //下一步
-        //把登录过程放在后台线程中
-        bool needPIN = false;
-        WeiboLogin wb;
+        private WeiboLogin wb;
+        private bool isLogin = false;
 
         public FormMain()
         {
@@ -23,43 +21,108 @@ namespace WeiboMonitor
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            btnStart.Text = "开始登陆";
-            txtPIN.Enabled = false;
-            if (!needPIN)
+            bgwLogin.RunWorkerAsync();
+        }
+
+        private void bgwLogin_DoWork(object sender, DoWorkEventArgs e)
+        {
+            SetEnabled(txtUsername, false);
+            SetEnabled(txtPassword, false);
+            SetEnabled(btnStart, false);
+            isLogin = false;
+            string result = "登陆失败，未知错误";
+
+            try
             {
                 wb = new WeiboLogin(txtUsername.Text, txtPassword.Text);
                 Image pinImage = wb.Start();
                 if (pinImage != null)
                 {
-                    picPIN.Image = pinImage;
-                    needPIN = true;
-                    labelState.Text = "请填写验证码";
-                    txtPIN.Enabled = true;
-                    btnStart.Text = "继续登陆";
+                    Form formPIN = new FormPIN(wb, pinImage);
+                    if (formPIN.ShowDialog() == DialogResult.OK)
+                    {
+                        result = wb.End((string)formPIN.Tag);
+                        string html = wb.Get("http://weibo.com/5237923337/");
+                    }
+                    else
+                    {
+                        result = "用户没有输入验证码，请重新登陆";
+                    }
                 }
                 else
                 {
-                    labelState.Text = "登录结果：" + wb.End(null);
-                    btnStart.Text = "重新登陆";
-                    txtRet.Text = wb.Get("http://weibo.com/5237923337/");
-                    WeiboPage wbPage = new WeiboPage(txtRet.Text);
+                    result = wb.End(null);
+                    string html = wb.Get("http://weibo.com/5237923337/");
+                    SetText(txtOutput, html);
                 }
+            }
+            catch(Exception ex)
+            {
+                result = ex.Message;
+            }
+
+            //对登陆结果进行判断并处理
+
+            if (result == "0")
+            {
+                isLogin = true;
+            }
+            else if (result == "2070")
+            {
+                MessageBox.Show("验证码错误，请重新登陆");
+            }
+            else if (result == "101&")
+            {
+                MessageBox.Show("密码错误，请重新登陆");
+            }
+            else if (result == "4049")
+            {
+                MessageBox.Show("验证码为空，请重新登陆");
             }
             else
             {
-                if (txtPIN.Text.Trim() != "")
-                {
-                    needPIN = false;
-                    labelState.Text = "登录结果：" + wb.End(txtPIN.Text.Trim());
-                    btnStart.Text = "重新登陆";
-                    txtRet.Text = wb.Get("http://weibo.com/quanqiuyulequshi/");
-                    WeiboPage wbPage = new WeiboPage(txtRet.Text);
-                }
-                else
-                {
-                    MessageBox.Show("请填写验证码");
-                    txtPIN.Enabled = true;
-                }
+                MessageBox.Show(result);
+            }
+            SetEnabled(txtUsername, !isLogin);
+            SetEnabled(txtPassword, !isLogin);
+            SetEnabled(btnStart, !isLogin);
+        }
+
+        delegate void SetTextDelegate(Control ctrl, string text);
+
+        /// <summary>
+        /// 跨线程设置控件Text
+        /// </summary>
+        /// <param name="ctrl">待设置的控件</param>
+        /// <param name="text">Text</param>
+        public static void SetText(Control ctrl, string text)
+        {
+            if (ctrl.InvokeRequired == true)
+            {
+                ctrl.Invoke(new SetTextDelegate(SetText), ctrl, text);
+            }
+            else
+            {
+                ctrl.Text = text;
+            }
+        }
+
+        delegate void SetEnabledDelegate(Control ctrl, bool enabled);
+
+        /// <summary>
+        /// 跨线程设置控件Enabled
+        /// </summary>
+        /// <param name="ctrl">待设置的控件</param>
+        /// <param name="enabled">Enabled</param>
+        public static void SetEnabled(Control ctrl, bool enabled)
+        {
+            if (ctrl.InvokeRequired == true)
+            {
+                ctrl.Invoke(new SetEnabledDelegate(SetEnabled), ctrl, enabled);
+            }
+            else
+            {
+                ctrl.Enabled = enabled;
             }
         }
     }

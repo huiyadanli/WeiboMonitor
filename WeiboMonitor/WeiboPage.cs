@@ -1,10 +1,6 @@
 ﻿using HtmlAgilityPack;
 using Newtonsoft.Json;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace WeiboMonitor
@@ -23,42 +19,83 @@ namespace WeiboMonitor
 
     public class WeiboPage
     {
+        private string originHTML;
+        private string oid;
+        private string onick;
+        private string uid;
+        private string nick;
+        private string location;
+        private List<WeiboFeed> wbFeedList = new List<WeiboFeed>();
+
         /// <summary>
-        /// GET得到的微博页面
+        /// 页面url
         /// </summary>
-        public string OriginHTML { get; set; }
+        public string Url
+        {
+            get { return "http://weibo.com/" + Oid; }
+        }
+
+        /// <summary>
+        /// GET得到的微博页面HTML
+        /// </summary>
+        public string OriginHTML
+        {
+            get { return originHTML; }
+        }
 
         /// <summary>
         /// 该页面用户ID
         /// </summary>
-        public string Oid { get; set; }
+        public string Oid
+        {
+            get { return oid; }
+        }
 
         /// <summary>
         /// 该页面用户昵称
         /// </summary>
-        public string Onick { get; set; }
+        public string Onick
+        {
+            get { return onick; }
+        }
 
         /// <summary>
         /// 登陆用户的ID
         /// </summary>
-        public string Uid { get; set; }
+        public string Uid
+        {
+            get { return uid; }
+        }
 
         /// <summary>
         /// 登陆用户的昵称
         /// </summary>
-        public string Nick { get; set; }
+        public string Nick
+        {
+            get { return nick; }
+        }
 
         /// <summary>
         /// 页面中的location字段，POST点赞时的一个参数
         /// </summary>
-        public string Location { get; set; }
+        public string Location
+        {
+            get { return location; }
+        }
 
+        /// <summary>
+        /// 各条微博内容
+        /// </summary>
+        public List<WeiboFeed> WbFeedList
+        {
+            get { return wbFeedList; }
+        }
 
         public WeiboPage(string html)
         {
-            OriginHTML = html;
+            originHTML = html;
             GetConfig();
-            GetAllFeeds();
+            wbFeedList = GetAllFeeds();
         }
 
         /// <summary>
@@ -66,11 +103,11 @@ namespace WeiboMonitor
         /// </summary>
         private void GetConfig()
         {
-            Oid = UseRegex(@"(?<=CONFIG\['oid'\]=').*?(?=';)");
-            Onick = UseRegex(@"(?<=CONFIG\['onick'\]=').*?(?=';)");
-            Uid = UseRegex(@"(?<=CONFIG\['uid'\]=').*?(?=';)");
-            Nick = UseRegex(@"(?<=CONFIG\['nick'\]=').*?(?=';)");
-            Location = UseRegex(@"(?<=CONFIG\['location'\]=').*?(?=';)");
+            oid = UseRegex(@"(?<=CONFIG\['oid'\]=').*?(?=';)");
+            onick = UseRegex(@"(?<=CONFIG\['onick'\]=').*?(?=';)");
+            uid = UseRegex(@"(?<=CONFIG\['uid'\]=').*?(?=';)");
+            nick = UseRegex(@"(?<=CONFIG\['nick'\]=').*?(?=';)");
+            location = UseRegex(@"(?<=CONFIG\['location'\]=').*?(?=';)");
         }
 
         /// <summary>
@@ -122,13 +159,40 @@ namespace WeiboMonitor
                     string username = feedListItem.SelectSingleNode("div[1]/div[@class='WB_detail']/div[1]/a[1]").InnerHtml;
                     string time = feedListItem.SelectSingleNode("div[1]/div[@class='WB_detail']/div[2]/a[1]").Attributes["title"].Value;
                     string content = feedListItem.SelectSingleNode("div[1]/div[@class='WB_detail']/div[3]").InnerHtml;
-                    
-                    WeiboFeed wbFeedTmp = new WeiboFeed(mid, username, time, content);
+
+                    WeiboFeed wbFeedTmp = new WeiboFeed(this, mid, username, time, content);
                     wbFeedList.Add(wbFeedTmp);
                 }
             }
 
             return wbFeedList;
+        }
+
+        /// <summary>
+        /// 比较输入的List（较旧），输出新增的WeiboFeed
+        /// </summary>
+        /// <param name="oldFeedList">旧的List</param>
+        /// <returns></returns>
+        public List<WeiboFeed> Compare(List<WeiboFeed> oldFeedList)
+        {
+            List<WeiboFeed> newWbFeedList = new List<WeiboFeed>();
+            foreach (WeiboFeed newFeed in WbFeedList)
+            {
+                bool isNewly = true;
+                foreach (WeiboFeed oldFeed in oldFeedList)
+                {
+                    if (oldFeed.Time >= newFeed.Time)
+                    {
+                        isNewly = false;
+                        break;
+                    }
+                }
+                if (isNewly)
+                {
+                    newWbFeedList.Add(newFeed);
+                }
+            }
+            return newWbFeedList;
         }
     }
 }

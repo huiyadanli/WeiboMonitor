@@ -63,13 +63,33 @@ namespace WeiboMonitor
         /// 创建POST方式的HTTP请求 
         /// </summary>
         /// <param name="url">请求的URL</param>
+        /// <param name="contentType">内容类型</param>
         /// <param name="postDataStr">发送的数据</param>
-        /// <returns>返回字符串</returns>
+        /// <returns></returns>
         public static string Post(string url, string postDataStr)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "POST";
             request.ContentType = "application/x-www-form-urlencoded"; //必须要的
+            request.ContentLength = postDataStr.Length;
+            StreamWriter writer = new StreamWriter(request.GetRequestStream());
+            writer.Write(postDataStr);
+            writer.Flush();
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            string encoding = response.ContentEncoding;
+            StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding("GBK"));
+            string retStr = sr.ReadToEnd();
+            sr.Close();
+            return retStr;
+        }
+
+        public static string Post(string url, string referer, CookieContainer myCookieContainer, string postDataStr)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "POST";
+            request.ContentType = "application/x-www-form-urlencoded"; //必须要的
+            request.Referer = referer;
+            request.CookieContainer = myCookieContainer;
             request.ContentLength = postDataStr.Length;
             StreamWriter writer = new StreamWriter(request.GetRequestStream());
             writer.Write(postDataStr);

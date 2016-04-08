@@ -2,9 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace WeiboMonitor
 {
+    /// <summary>
+    /// 用于Json解析
+    /// </summary>
+    public class ResponseJson
+    {
+        public string code { get; set; }
+        public string msg { get; set; }
+        public DataJson data { get; set; }
+
+        public class DataJson
+        {
+            public int isDel { get; set; }
+            public string html { get; set; }
+        }
+    }
+
     public class WeiboFeed
     {
         /// <summary>
@@ -20,12 +37,14 @@ namespace WeiboMonitor
         /// <summary>
         /// 发表时间
         /// </summary>
-        public string Time { get; set; }
+        public DateTime Time { get; set; }
 
         /// <summary>
         /// 微博内容
         /// </summary>
         public string Content { get; set; }
+
+        public WeiboPage WBPage { get; set; }
 
         /// <summary>
         /// 构造函数
@@ -33,16 +52,30 @@ namespace WeiboMonitor
         /// <param name="id"></param>
         /// <param name="time"></param>
         /// <param name="content"></param>
-        public WeiboFeed(string id,string username, string time, string content)
+        public WeiboFeed(WeiboPage fatherPage, string id, string username, string time, string content)
         {
+            WBPage = fatherPage;
             ID = id;
             Username = username;
-            Time = time;
             Content = content;
+
+            Time = DateTime.Parse(time);
         }
 
-        public void Like()
+        public int Like(WeiboLogin wbLogin)
         {
+            try
+            {
+                string url = "http://weibo.com/aj/v6/like/add?ajwvr=6";
+                string postStr = "location=" + WBPage.Location + "&version=mini&qid=heart&mid=" + ID + "&loc=profile";
+                string responseStr = HttpHelper.Post(url, WBPage.Url, wbLogin.MyCookies, postStr);
+                ResponseJson responseJson = JsonConvert.DeserializeObject<ResponseJson>(responseStr);
+                return responseJson.data.isDel;
+            }
+            catch
+            {
+                return -1;
+            }
 
         }
 

@@ -118,7 +118,7 @@ namespace WeiboMonitor
         /// 获取验证码图片
         /// </summary>
         /// <returns></returns>
-        private Image GetPIN()
+        public Image GetPIN()
         {
             string url = "http://login.sina.com.cn/cgi/pin.php?p=" + pcid;
             return HttpHelper.GetImage(url);
