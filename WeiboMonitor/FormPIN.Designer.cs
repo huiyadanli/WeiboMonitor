@@ -36,6 +36,7 @@
             // 
             // picPIN
             // 
+            this.picPIN.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picPIN.Location = new System.Drawing.Point(12, 12);
             this.picPIN.Name = "picPIN";
             this.picPIN.Size = new System.Drawing.Size(100, 40);
@@ -45,7 +46,6 @@
             // 
             // txtPIN
             // 
-            this.txtPIN.Enabled = false;
             this.txtPIN.Location = new System.Drawing.Point(12, 61);
             this.txtPIN.MaxLength = 10;
             this.txtPIN.Name = "txtPIN";
@@ -54,7 +54,6 @@
             // 
             // btnOK
             // 
-            this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnOK.Location = new System.Drawing.Point(12, 88);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(100, 23);
@@ -65,6 +64,7 @@
             // 
             // FormPIN
             // 
+            this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(124, 121);

@@ -11,12 +11,13 @@ namespace WeiboMonitor
 {
     public partial class FormMain : Form
     {
-        private WeiboLogin wb;
+        private WeiboLogin wbLogin;
         private bool isLogin = false;
 
         public FormMain()
         {
             InitializeComponent();
+            rtbOutput.Text = "https://github.com/huiyadanli";
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -28,21 +29,23 @@ namespace WeiboMonitor
         {
             SetEnabled(txtUsername, false);
             SetEnabled(txtPassword, false);
+            SetEnabled(txtUID, false);
+            SetEnabled(txtInterval, false);
             SetEnabled(btnStart, false);
             isLogin = false;
             string result = "登陆失败，未知错误";
 
             try
             {
-                wb = new WeiboLogin(txtUsername.Text, txtPassword.Text);
-                Image pinImage = wb.Start();
+                // 模拟登陆
+                wbLogin = new WeiboLogin(txtUsername.Text, txtPassword.Text);
+                Image pinImage = wbLogin.Start();
                 if (pinImage != null)
                 {
-                    Form formPIN = new FormPIN(wb, pinImage);
+                    Form formPIN = new FormPIN(wbLogin, pinImage);
                     if (formPIN.ShowDialog() == DialogResult.OK)
                     {
-                        result = wb.End((string)formPIN.Tag);
-                        string html = wb.Get("http://weibo.com/5237923337/");
+                        result = wbLogin.End((string)formPIN.Tag);
                     }
                     else
                     {
@@ -51,12 +54,10 @@ namespace WeiboMonitor
                 }
                 else
                 {
-                    result = wb.End(null);
-                    string html = wb.Get("http://weibo.com/5237923337/");
-                    SetText(txtOutput, html);
+                    result = wbLogin.End(null);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 result = ex.Message;
             }
@@ -66,26 +67,87 @@ namespace WeiboMonitor
             if (result == "0")
             {
                 isLogin = true;
+                SetText(rtbOutput, "模拟登陆成功" + Environment.NewLine);
+                try
+                {
+                    MonitorTimer mTimer = new MonitorTimer(wbLogin, txtUID.Text.Trim());
+                    mTimer.Interval = Convert.ToInt32(txtInterval.Text.Trim()) * 1000;
+                    mTimer.Elapsed += new System.Timers.ElapsedEventHandler(mTimer_Elapsed);
+                    mTimer.Start();
+                    AppendText(rtbOutput, "开始监控" + Environment.NewLine);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "提示");
+                }
             }
             else if (result == "2070")
             {
-                MessageBox.Show("验证码错误，请重新登陆");
+                MessageBox.Show("验证码错误，请重新登陆", "提示");
             }
             else if (result == "101&")
             {
-                MessageBox.Show("密码错误，请重新登陆");
+                MessageBox.Show("密码错误，请重新登陆", "提示");
             }
             else if (result == "4049")
             {
-                MessageBox.Show("验证码为空，请重新登陆");
+                MessageBox.Show("验证码为空，请重新登陆", "提示");
             }
             else
             {
-                MessageBox.Show(result);
+                MessageBox.Show(result, "提示");
             }
             SetEnabled(txtUsername, !isLogin);
             SetEnabled(txtPassword, !isLogin);
+            SetEnabled(txtUID, !isLogin);
+            SetEnabled(txtInterval, !isLogin);
             SetEnabled(btnStart, !isLogin);
+        }
+
+        private void mTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            lock (this)
+            {
+                MonitorTimer t = (MonitorTimer)sender;
+                string html = t.WbLogin.Get("http://weibo.com/" + t.Uid);
+                WeiboPage newPage = new WeiboPage(html);
+                List<WeiboFeed> newWbFeedList = newPage.Compare(t.OldPage.WbFeedList);
+                for (int i = 0; i < newWbFeedList.Count; i++)
+                {
+                    newWbFeedList[i].Like(t.WbLogin);
+                }
+                t.OldPage = newPage;
+                DateTime now = System.DateTime.Now;
+                string tmp;
+                if (newWbFeedList.Count>0)
+                {
+                   tmp = newWbFeedList[0].ID;
+                }
+                else
+                {
+                    tmp = "0";
+                }
+                AppendText(rtbOutput, now.Second + " " + tmp + " " + Environment.NewLine);
+            }
+        }
+
+        delegate void AppendTextDelegate(Control ctrl, string text);
+
+        /// <summary>
+        /// 跨线程设置控件Text
+        /// </summary>
+        /// <param name="ctrl">待设置的控件</param>
+        /// <param name="text">Text</param>
+        public static void AppendText(Control ctrl, string text)
+        {
+            if (ctrl.InvokeRequired == true)
+            {
+                ctrl.Invoke(new AppendTextDelegate(AppendText), ctrl, text);
+            }
+            else
+            {
+                ctrl.Text += text;
+            }
         }
 
         delegate void SetTextDelegate(Control ctrl, string text);
@@ -124,6 +186,11 @@ namespace WeiboMonitor
             {
                 ctrl.Enabled = enabled;
             }
+        }
+
+        private void rtbOutput_LinkClicked(object sender, LinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(e.LinkText);
         }
     }
 }

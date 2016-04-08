@@ -31,19 +31,21 @@
             this.btnStart = new System.Windows.Forms.Button();
             this.txtUsername = new System.Windows.Forms.TextBox();
             this.txtPassword = new System.Windows.Forms.TextBox();
-            this.txtOutput = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.bgwLogin = new System.ComponentModel.BackgroundWorker();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtUID = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.txtInterval = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.rtbOutput = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(290, 14);
+            this.btnStart.Location = new System.Drawing.Point(12, 126);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(84, 48);
+            this.btnStart.Size = new System.Drawing.Size(166, 23);
             this.btnStart.TabIndex = 0;
             this.btnStart.Text = "登录并开始监控";
             this.btnStart.UseVisualStyleBackColor = true;
@@ -66,15 +68,6 @@
             this.txtPassword.TabIndex = 2;
             this.txtPassword.Text = "8402191";
             // 
-            // txtOutput
-            // 
-            this.txtOutput.Location = new System.Drawing.Point(12, 68);
-            this.txtOutput.Multiline = true;
-            this.txtOutput.Name = "txtOutput";
-            this.txtOutput.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtOutput.Size = new System.Drawing.Size(362, 231);
-            this.txtOutput.TabIndex = 5;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -87,7 +80,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 44);
+            this.label2.Location = new System.Drawing.Point(12, 45);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(41, 12);
             this.label2.TabIndex = 7;
@@ -97,35 +90,68 @@
             // 
             this.bgwLogin.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwLogin_DoWork);
             // 
-            // textBox1
+            // txtUID
             // 
-            this.textBox1.Location = new System.Drawing.Point(184, 41);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 21);
-            this.textBox1.TabIndex = 8;
+            this.txtUID.Location = new System.Drawing.Point(83, 68);
+            this.txtUID.Name = "txtUID";
+            this.txtUID.Size = new System.Drawing.Size(95, 21);
+            this.txtUID.TabIndex = 8;
+            this.txtUID.Text = "5237923337";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(189, 17);
+            this.label3.Location = new System.Drawing.Point(12, 73);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(95, 12);
+            this.label3.Size = new System.Drawing.Size(59, 12);
             this.label3.TabIndex = 9;
-            this.label3.Text = "监控页面的UID：";
+            this.label3.Text = "页面UID：";
+            // 
+            // txtInterval
+            // 
+            this.txtInterval.Location = new System.Drawing.Point(83, 95);
+            this.txtInterval.Name = "txtInterval";
+            this.txtInterval.Size = new System.Drawing.Size(95, 21);
+            this.txtInterval.TabIndex = 10;
+            this.txtInterval.Text = "5";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 101);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(65, 12);
+            this.label4.TabIndex = 11;
+            this.label4.Text = "刷新间隔：";
+            // 
+            // rtbOutput
+            // 
+            this.rtbOutput.Location = new System.Drawing.Point(195, 12);
+            this.rtbOutput.Name = "rtbOutput";
+            this.rtbOutput.ReadOnly = true;
+            this.rtbOutput.Size = new System.Drawing.Size(298, 137);
+            this.rtbOutput.TabIndex = 12;
+            this.rtbOutput.Text = "";
+            this.rtbOutput.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.rtbOutput_LinkClicked);
             // 
             // FormMain
             // 
+            this.AcceptButton = this.btnStart;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(391, 311);
+            this.ClientSize = new System.Drawing.Size(503, 159);
+            this.Controls.Add(this.rtbOutput);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.txtInterval);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txtUID);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.txtOutput);
             this.Controls.Add(this.txtPassword);
             this.Controls.Add(this.txtUsername);
             this.Controls.Add(this.btnStart);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FormMain";
             this.Text = "新发微博秒赞器";
             this.ResumeLayout(false);
@@ -138,12 +164,14 @@
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.TextBox txtUsername;
         private System.Windows.Forms.TextBox txtPassword;
-        private System.Windows.Forms.TextBox txtOutput;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.ComponentModel.BackgroundWorker bgwLogin;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtUID;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtInterval;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.RichTextBox rtbOutput;
     }
 }
 

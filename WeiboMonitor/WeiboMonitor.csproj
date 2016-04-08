@@ -84,6 +84,9 @@
       <DependentUpon>FormPIN.cs</DependentUpon>
     </Compile>
     <Compile Include="HttpHelper.cs" />
+    <Compile Include="MonitorTimer.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="WeiboFeed.cs" />
     <Compile Include="WeiboPage.cs" />
     <Compile Include="Program.cs" />

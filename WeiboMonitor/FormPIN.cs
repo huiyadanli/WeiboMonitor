@@ -29,8 +29,12 @@ namespace WeiboMonitor
         {
             if (txtPIN.Text.Trim() != "")
             {
-                this.Tag = txtPIN.Text;
-                this.Close();
+                this.Tag = txtPIN.Text.Trim();
+                this.DialogResult = DialogResult.OK;
+            }
+            else
+            {
+                MessageBox.Show("请输入验证码");
             }
         }
     }
