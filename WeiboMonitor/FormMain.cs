@@ -17,7 +17,8 @@ namespace WeiboMonitor
         public FormMain()
         {
             InitializeComponent();
-            rtbOutput.Text = "https://github.com/huiyadanli";
+            rtbOutput.Text = "项目地址：https://github.com/huiyadanli/WeiboMonitor" + Environment.NewLine
+                + "监控时间建议大于20s，否则可能会出现账号异常的情况" + Environment.NewLine;
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -67,10 +68,10 @@ namespace WeiboMonitor
                 result = ex.Message;
             }
 
-            //对登陆结果进行判断并处理
-
+            // 对登陆结果进行判断并处理
             if (result == "0")
             {
+                // 开启timer监控页面
                 isLogin = true;
                 SetText(rtbOutput, "模拟登陆成功" + Environment.NewLine);
                 try
@@ -122,23 +123,24 @@ namespace WeiboMonitor
                     }
                     t.OldPage = newPage;
 
-
                     // 输出相关信息
-                    DateTime now = System.DateTime.Now;
-                    string tmp;
                     if (newWbFeedList.Count > 0)
                     {
-                        tmp = newWbFeedList[0].Content;
+                        AppendText(rtbOutput, DateTime.Now.ToString("hh:mm:ss") + " 发现新微博：" + Environment.NewLine);
+                        for (int i = 0; i < newWbFeedList.Count; i++)
+                        {
+                            AppendText(rtbOutput, "[" + i + "] [" + newWbFeedList[i].Content.Trim() + "] [" + Environment.NewLine);
+                        }
                     }
                     else
                     {
-                        tmp = newPage.WbFeedList.Count.ToString();
+                        AppendText(rtbOutput, DateTime.Now.ToString("hh:mm:ss") + " 当前页微博个数:" + newPage.WbFeedList.Count + Environment.NewLine);
                     }
-                    AppendText(rtbOutput, now.Minute + ":" + now.Second + " " + tmp + " " + Environment.NewLine);
+
                 }
                 else
                 {
-                    AppendText(rtbOutput, "本次微博页面获取失败");
+                    AppendText(rtbOutput, "本次微博页面获取失败" + Environment.NewLine);
                 }
             }
         }
@@ -203,6 +205,12 @@ namespace WeiboMonitor
         private void rtbOutput_LinkClicked(object sender, LinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start(e.LinkText);
+        }
+
+        private void rtbOutput_TextChanged(object sender, EventArgs e)
+        {
+            rtbOutput.SelectionStart = rtbOutput.Text.Length;
+            rtbOutput.ScrollToCaret();
         }
     }
 }
