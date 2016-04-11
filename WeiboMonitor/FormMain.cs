@@ -24,7 +24,14 @@ namespace WeiboMonitor
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            bgwLogin.RunWorkerAsync();
+            if (txtUsername.Text.Trim() != "" && txtPassword.Text.Trim() != "" && txtUID.Text.Trim() != "" && txtInterval.Text.Trim() != "")
+            {
+                bgwLogin.RunWorkerAsync();
+            }
+            else
+            {
+                MessageBox.Show("请填写完信息再登录！", "提示");
+            }
         }
 
         private void SwitchControl()
@@ -240,7 +247,7 @@ namespace WeiboMonitor
                 WindowState = FormWindowState.Normal;
                 this.Focus();
             }
-            else 
+            else
             {
                 this.WindowState = FormWindowState.Minimized;
                 this.Hide();

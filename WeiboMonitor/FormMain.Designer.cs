@@ -43,8 +43,8 @@
             this.rtbOutput = new System.Windows.Forms.RichTextBox();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.tsmiExit = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiExit = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -64,7 +64,6 @@
             this.txtUsername.Name = "txtUsername";
             this.txtUsername.Size = new System.Drawing.Size(119, 21);
             this.txtUsername.TabIndex = 1;
-            this.txtUsername.Text = "辉鸭蛋";
             // 
             // txtPassword
             // 
@@ -73,7 +72,6 @@
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(119, 21);
             this.txtPassword.TabIndex = 2;
-            this.txtPassword.Text = "8402191";
             // 
             // label1
             // 
@@ -103,7 +101,6 @@
             this.txtUID.Name = "txtUID";
             this.txtUID.Size = new System.Drawing.Size(95, 21);
             this.txtUID.TabIndex = 8;
-            this.txtUID.Text = "5237923337";
             // 
             // label3
             // 
@@ -158,19 +155,19 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(101, 48);
             // 
-            // tsmiExit
-            // 
-            this.tsmiExit.Name = "tsmiExit";
-            this.tsmiExit.Size = new System.Drawing.Size(100, 22);
-            this.tsmiExit.Text = "退出";
-            this.tsmiExit.Click += new System.EventHandler(this.tsmiExit_Click);
-            // 
             // tsmiOpen
             // 
             this.tsmiOpen.Name = "tsmiOpen";
             this.tsmiOpen.Size = new System.Drawing.Size(100, 22);
             this.tsmiOpen.Text = "打开";
             this.tsmiOpen.Click += new System.EventHandler(this.tsmiOpen_Click);
+            // 
+            // tsmiExit
+            // 
+            this.tsmiExit.Name = "tsmiExit";
+            this.tsmiExit.Size = new System.Drawing.Size(100, 22);
+            this.tsmiExit.Text = "退出";
+            this.tsmiExit.Click += new System.EventHandler(this.tsmiExit_Click);
             // 
             // FormMain
             // 
