@@ -18,7 +18,7 @@ namespace WeiboMonitor
         {
             InitializeComponent();
             rtbOutput.Text = "项目地址：https://github.com/huiyadanli/WeiboMonitor" + Environment.NewLine
-                + "监控时间建议大于20s，否则可能会出现账号异常的情况" + Environment.NewLine;
+                + "刷新时间间隔不宜太小，否则可能会出现账号异常的情况" + Environment.NewLine;
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -129,7 +129,7 @@ namespace WeiboMonitor
                         AppendText(rtbOutput, DateTime.Now.ToString("hh:mm:ss") + " 发现新微博：" + Environment.NewLine);
                         for (int i = 0; i < newWbFeedList.Count; i++)
                         {
-                            AppendText(rtbOutput, "[" + i + "] [" + newWbFeedList[i].Content.Trim() + "] [" + Environment.NewLine);
+                            AppendText(rtbOutput, "[" + i + "] [" + newWbFeedList[i].Content.Trim() + "]" + Environment.NewLine);
                         }
                     }
                     else
