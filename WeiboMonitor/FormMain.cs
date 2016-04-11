@@ -13,6 +13,7 @@ namespace WeiboMonitor
     {
         private WeiboLogin wbLogin;
         private bool isLogin = false;
+        MonitorTimer mTimer;
 
         public FormMain()
         {
@@ -76,7 +77,7 @@ namespace WeiboMonitor
                 SetText(rtbOutput, "模拟登陆成功" + Environment.NewLine);
                 try
                 {
-                    MonitorTimer mTimer = new MonitorTimer(wbLogin, txtUID.Text.Trim());
+                    mTimer = new MonitorTimer(wbLogin, txtUID.Text.Trim());
                     mTimer.Interval = Convert.ToInt32(txtInterval.Text.Trim()) * 1000;
                     mTimer.Elapsed += new System.Timers.ElapsedEventHandler(mTimer_Elapsed);
                     mTimer.Start();
@@ -211,6 +212,46 @@ namespace WeiboMonitor
         {
             rtbOutput.SelectionStart = rtbOutput.Text.Length;
             rtbOutput.ScrollToCaret();
+        }
+
+        private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            //注意判断关闭事件Reason来源于窗体按钮，否则用菜单退出时无法退出!
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                e.Cancel = true;    //取消"关闭窗口"事件
+                this.WindowState = FormWindowState.Minimized;    //使关闭时窗口向右下角缩小的效果
+                this.Hide();
+                return;
+            }
+        }
+
+        private void tsmiExit_Click(object sender, EventArgs e)
+        {
+            //mTimer.Stop();
+            Application.Exit();
+        }
+
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (WindowState == FormWindowState.Minimized)
+            {
+                this.Show();
+                WindowState = FormWindowState.Normal;
+                this.Focus();
+            }
+            else 
+            {
+                this.WindowState = FormWindowState.Minimized;
+                this.Hide();
+            }
+        }
+
+        private void tsmiOpen_Click(object sender, EventArgs e)
+        {
+            this.Show();
+            WindowState = FormWindowState.Normal;
+            this.Focus();
         }
     }
 }
