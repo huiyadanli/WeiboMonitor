@@ -102,7 +102,7 @@ namespace WeiboMonitor
         {
             string url = "http://login.sina.com.cn/sso/prelogin.php?entry=weibo&callback=sinaSSOController.preloginCallBack&su="
                 + su + "&rsakt=mod&checkpin=1&client=ssologin.js(v1.4.18)";
-            string content = HttpHelper.Get(url);
+            string content = HttpHelper.Get(url, false);
             int pos;
             pos = content.IndexOf("servertime");
             servertime = content.Substring(pos + 12, 10);

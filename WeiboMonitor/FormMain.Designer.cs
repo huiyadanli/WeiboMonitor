@@ -113,7 +113,7 @@
             this.txtInterval.Name = "txtInterval";
             this.txtInterval.Size = new System.Drawing.Size(95, 21);
             this.txtInterval.TabIndex = 10;
-            this.txtInterval.Text = "5";
+            this.txtInterval.Text = "20";
             // 
             // label4
             // 

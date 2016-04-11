@@ -34,11 +34,11 @@ namespace WeiboMonitor
         /// </summary>
         /// <param name="url">请求的URL</param>
         /// <returns>返回字符串</returns>
-        public static string Get(string url) 
+        public static string Get(string url, bool autoRedirect) 
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "GET";
-            request.AllowAutoRedirect = false;
+            request.AllowAutoRedirect = autoRedirect;
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.UTF8);
             string retStr = sr.ReadToEnd();

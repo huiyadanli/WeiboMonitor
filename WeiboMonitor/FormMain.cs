@@ -25,14 +25,19 @@ namespace WeiboMonitor
             bgwLogin.RunWorkerAsync();
         }
 
+        private void SwitchControl()
+        {
+            SetEnabled(txtUsername, !isLogin);
+            SetEnabled(txtPassword, !isLogin);
+            SetEnabled(txtUID, !isLogin);
+            SetEnabled(txtInterval, !isLogin);
+            SetEnabled(btnStart, !isLogin);
+        }
+
         private void bgwLogin_DoWork(object sender, DoWorkEventArgs e)
         {
-            SetEnabled(txtUsername, false);
-            SetEnabled(txtPassword, false);
-            SetEnabled(txtUID, false);
-            SetEnabled(txtInterval, false);
-            SetEnabled(btnStart, false);
             isLogin = false;
+            SwitchControl();
             string result = "登陆失败，未知错误";
 
             try
@@ -74,11 +79,12 @@ namespace WeiboMonitor
                     mTimer.Interval = Convert.ToInt32(txtInterval.Text.Trim()) * 1000;
                     mTimer.Elapsed += new System.Timers.ElapsedEventHandler(mTimer_Elapsed);
                     mTimer.Start();
-                    AppendText(rtbOutput, "开始监控" + Environment.NewLine);
+                    AppendText(rtbOutput, "开始监控，刷新间隔：" + txtInterval.Text.Trim() + " s" + Environment.NewLine);
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "提示");
+                    SwitchControl();
                 }
             }
             else if (result == "2070")
@@ -97,11 +103,7 @@ namespace WeiboMonitor
             {
                 MessageBox.Show(result, "提示");
             }
-            SetEnabled(txtUsername, !isLogin);
-            SetEnabled(txtPassword, !isLogin);
-            SetEnabled(txtUID, !isLogin);
-            SetEnabled(txtInterval, !isLogin);
-            SetEnabled(btnStart, !isLogin);
+            SwitchControl();
         }
 
         private void mTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -109,25 +111,35 @@ namespace WeiboMonitor
             lock (this)
             {
                 MonitorTimer t = (MonitorTimer)sender;
-                string html = t.WbLogin.Get("http://weibo.com/" + t.Uid);
+                string html = wbLogin.Get("http://weibo.com/" + t.Uid + "?is_all=1");
                 WeiboPage newPage = new WeiboPage(html);
                 List<WeiboFeed> newWbFeedList = newPage.Compare(t.OldPage.WbFeedList);
-                for (int i = 0; i < newWbFeedList.Count; i++)
+                if (newWbFeedList != null)
                 {
-                    newWbFeedList[i].Like(t.WbLogin);
-                }
-                t.OldPage = newPage;
-                DateTime now = System.DateTime.Now;
-                string tmp;
-                if (newWbFeedList.Count>0)
-                {
-                   tmp = newWbFeedList[0].ID;
+                    for (int i = 0; i < newWbFeedList.Count; i++)
+                    {
+                        newWbFeedList[i].Like(wbLogin);
+                    }
+                    t.OldPage = newPage;
+
+
+                    // 输出相关信息
+                    DateTime now = System.DateTime.Now;
+                    string tmp;
+                    if (newWbFeedList.Count > 0)
+                    {
+                        tmp = newWbFeedList[0].Content;
+                    }
+                    else
+                    {
+                        tmp = newPage.WbFeedList.Count.ToString();
+                    }
+                    AppendText(rtbOutput, now.Minute + ":" + now.Second + " " + tmp + " " + Environment.NewLine);
                 }
                 else
                 {
-                    tmp = "0";
+                    AppendText(rtbOutput, "本次微博页面获取失败");
                 }
-                AppendText(rtbOutput, now.Second + " " + tmp + " " + Environment.NewLine);
             }
         }
 

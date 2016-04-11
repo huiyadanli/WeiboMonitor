@@ -125,6 +125,7 @@ namespace WeiboMonitor
         /// <summary>
         /// 获取该页面各条微博
         /// </summary>
+        /// <returns></returns>
         public List<WeiboFeed> GetAllFeeds()
         {
             //微博正文内容 在下面这个字符串所在的那一行
@@ -139,6 +140,12 @@ namespace WeiboMonitor
                     break;
                 }
             }
+            //无法搜索到此字符串时
+            if (i == line.Length)
+            {
+                return null;
+            }
+
             //取出<script>标签内的Json数据
             string jsonStr = line[i].Replace("<script>FM.view(", "").Replace(")</script>", "");
             //使用 Newtonsoft.Json 反序列化
@@ -175,8 +182,14 @@ namespace WeiboMonitor
         /// <returns></returns>
         public List<WeiboFeed> Compare(List<WeiboFeed> oldFeedList)
         {
+            // 自身没有抓取到微博时直接返回null
+            if(wbFeedList == null)
+            {
+                return null;
+            }
+
             List<WeiboFeed> newWbFeedList = new List<WeiboFeed>();
-            foreach (WeiboFeed newFeed in WbFeedList)
+            foreach (WeiboFeed newFeed in wbFeedList)
             {
                 bool isNewly = true;
                 foreach (WeiboFeed oldFeed in oldFeedList)
