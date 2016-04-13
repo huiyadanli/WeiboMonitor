@@ -71,6 +71,7 @@
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.txtPIN);
             this.Controls.Add(this.picPIN);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormPIN";

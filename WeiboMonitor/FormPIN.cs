@@ -18,6 +18,9 @@ namespace WeiboMonitor
             InitializeComponent();
             picPIN.Image = pinImage;
             this.wb = wb;
+            //this.Owner = f;
+            this.StartPosition = FormStartPosition.CenterScreen;
+            //this.Location = new Point(this.Owner.Location.X + 10, this.Owner.Location.Y + 10);
         }
 
         private void picPIN_Click(object sender, EventArgs e)
