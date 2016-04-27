@@ -45,14 +45,15 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.chkForcedpin = new System.Windows.Forms.CheckBox();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(12, 126);
+            this.btnStart.Location = new System.Drawing.Point(395, 66);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(166, 23);
+            this.btnStart.Size = new System.Drawing.Size(123, 23);
             this.btnStart.TabIndex = 0;
             this.btnStart.Text = "登录并开始监控";
             this.btnStart.UseVisualStyleBackColor = true;
@@ -97,15 +98,16 @@
             // 
             // txtUID
             // 
-            this.txtUID.Location = new System.Drawing.Point(83, 68);
+            this.txtUID.Location = new System.Drawing.Point(268, 12);
+            this.txtUID.Multiline = true;
             this.txtUID.Name = "txtUID";
-            this.txtUID.Size = new System.Drawing.Size(95, 21);
+            this.txtUID.Size = new System.Drawing.Size(250, 45);
             this.txtUID.TabIndex = 8;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 73);
+            this.label3.Location = new System.Drawing.Point(203, 17);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(59, 12);
             this.label3.TabIndex = 9;
@@ -113,16 +115,16 @@
             // 
             // txtInterval
             // 
-            this.txtInterval.Location = new System.Drawing.Point(83, 95);
+            this.txtInterval.Location = new System.Drawing.Point(83, 68);
             this.txtInterval.Name = "txtInterval";
-            this.txtInterval.Size = new System.Drawing.Size(95, 21);
+            this.txtInterval.Size = new System.Drawing.Size(97, 21);
             this.txtInterval.TabIndex = 10;
             this.txtInterval.Text = "20";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 101);
+            this.label4.Location = new System.Drawing.Point(12, 74);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(65, 12);
             this.label4.TabIndex = 11;
@@ -130,10 +132,10 @@
             // 
             // rtbOutput
             // 
-            this.rtbOutput.Location = new System.Drawing.Point(195, 12);
+            this.rtbOutput.Location = new System.Drawing.Point(12, 97);
             this.rtbOutput.Name = "rtbOutput";
             this.rtbOutput.ReadOnly = true;
-            this.rtbOutput.Size = new System.Drawing.Size(298, 137);
+            this.rtbOutput.Size = new System.Drawing.Size(506, 163);
             this.rtbOutput.TabIndex = 12;
             this.rtbOutput.Text = "";
             this.rtbOutput.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.rtbOutput_LinkClicked);
@@ -169,12 +171,23 @@
             this.tsmiExit.Text = "退出";
             this.tsmiExit.Click += new System.EventHandler(this.tsmiExit_Click);
             // 
+            // chkForcedpin
+            // 
+            this.chkForcedpin.AutoSize = true;
+            this.chkForcedpin.Location = new System.Drawing.Point(268, 70);
+            this.chkForcedpin.Name = "chkForcedpin";
+            this.chkForcedpin.Size = new System.Drawing.Size(84, 16);
+            this.chkForcedpin.TabIndex = 13;
+            this.chkForcedpin.Text = "强制验证码";
+            this.chkForcedpin.UseVisualStyleBackColor = true;
+            // 
             // FormMain
             // 
             this.AcceptButton = this.btnStart;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(503, 159);
+            this.ClientSize = new System.Drawing.Size(529, 272);
+            this.Controls.Add(this.chkForcedpin);
             this.Controls.Add(this.rtbOutput);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.txtInterval);
@@ -214,6 +227,7 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem tsmiExit;
         private System.Windows.Forms.ToolStripMenuItem tsmiOpen;
+        private System.Windows.Forms.CheckBox chkForcedpin;
     }
 }
 

@@ -40,15 +40,18 @@ namespace WeiboMonitor
         private string nonce; //预登录参数3（随机数）
         private string showpin; //预登录参数4（是否需要验证码）
 
+        private bool forcedpin = false;
+
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="username">用户名</param>
         /// <param name="password">密码</param>
-        public WeiboLogin(string username, string password)
+        public WeiboLogin(string username, string password, bool forcedpin)
         {
             this.Username = username;
             this.Password = password;
+            this.forcedpin = forcedpin;
 
             //Base64加密用户名
             Encoding myEncoding = Encoding.GetEncoding("utf-8");
@@ -63,7 +66,7 @@ namespace WeiboMonitor
         public Image Start()
         {
             GetParameter();
-            if (showpin == "1")
+            if (showpin == "1" || forcedpin)
             {
                 return GetPIN();
             }
@@ -159,7 +162,7 @@ namespace WeiboMonitor
                             + "&nonce=" + nonce
                             + "&pwencode=rsa2&rsakv=" + RSAKV + "&sp=" + sp
                             + "&sr=1366*768&encoding=UTF-8&prelt=104&url=http%3A%2F%2Fweibo.com%2Fajaxlogin.php%3Fframelogin%3D1%26callback%3Dparent.sinaSSOController.feedBackUrlCallBack&returntype=META";
-            if (showpin == "1" && door != null)
+            if ((showpin == "1" || forcedpin) && door != null)
             {
                 postData += "&pcid=" + pcid + "&door=" + door;
             }

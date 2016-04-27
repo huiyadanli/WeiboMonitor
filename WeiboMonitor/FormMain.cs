@@ -52,7 +52,7 @@ namespace WeiboMonitor
             try
             {
                 // 模拟登陆
-                wbLogin = new WeiboLogin(txtUsername.Text, txtPassword.Text);
+                wbLogin = new WeiboLogin(txtUsername.Text, txtPassword.Text, chkForcedpin.Checked);
                 Image pinImage = wbLogin.Start();
                 if (pinImage != null)
                 {
@@ -106,7 +106,7 @@ namespace WeiboMonitor
             }
             else if (result == "4049")
             {
-                MessageBox.Show("验证码为空，请重新登陆", "提示");
+                MessageBox.Show("验证码为空，请重新登陆。（如果你没有输入验证码，请选中强制验证码进行登录）", "提示");
             }
             else
             {
