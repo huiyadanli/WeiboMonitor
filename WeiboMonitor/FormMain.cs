@@ -81,6 +81,7 @@ namespace WeiboMonitor
             {
                 // 开启timer监控页面
                 isLogin = true;
+                SwitchControl();
                 SetText(rtbOutput, "模拟登陆成功" + Environment.NewLine);
                 try
                 {
@@ -127,14 +128,14 @@ namespace WeiboMonitor
                 {
                     for (int i = 0; i < newWbFeedList.Count; i++)
                     {
-                        newWbFeedList[i].Like(wbLogin);
+                        newWbFeedList[i].Like(wbLogin, true);
                     }
                     t.OldPage = newPage;
 
                     // 输出相关信息
                     if (newWbFeedList.Count > 0)
                     {
-                        AppendText(rtbOutput, DateTime.Now.ToString("hh:mm:ss") + " 发现新微博：" + Environment.NewLine);
+                        AppendText(rtbOutput, DateTime.Now.ToString("HH:mm:ss") + " 发现新微博：" + Environment.NewLine);
                         for (int i = 0; i < newWbFeedList.Count; i++)
                         {
                             AppendText(rtbOutput, "[" + i + "] [" + newWbFeedList[i].Content.Trim() + "]" + Environment.NewLine);
@@ -142,7 +143,7 @@ namespace WeiboMonitor
                     }
                     else
                     {
-                        AppendText(rtbOutput, DateTime.Now.ToString("hh:mm:ss") + " 当前页微博个数:" + newPage.WbFeedList.Count + Environment.NewLine);
+                        AppendText(rtbOutput, DateTime.Now.ToString("HH:mm:ss") + " 当前页微博个数:" + newPage.WbFeedList.Count + Environment.NewLine);
                     }
 
                 }

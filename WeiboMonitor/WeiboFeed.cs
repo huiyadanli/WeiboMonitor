@@ -44,6 +44,11 @@ namespace WeiboMonitor
         /// </summary>
         public string Content { get; set; }
 
+        /// <summary>
+        /// 点赞状态
+        /// </summary>
+        public bool IsLike { get; set; }
+
         public WeiboPage WBPage { get; set; }
 
         /// <summary>
@@ -52,18 +57,30 @@ namespace WeiboMonitor
         /// <param name="id"></param>
         /// <param name="time"></param>
         /// <param name="content"></param>
-        public WeiboFeed(WeiboPage fatherPage, string id, string username, string time, string content)
+        public WeiboFeed(WeiboPage fatherPage, string id, string username, string time, string content, bool isLike)
         {
             WBPage = fatherPage;
             ID = id;
             Username = username;
             Content = content;
+            IsLike = isLike;
 
             Time = DateTime.Parse(time);
         }
 
-        public int Like(WeiboLogin wbLogin)
+        /// <summary>
+        /// 点赞功能
+        /// </summary>
+        /// <param name="wbLogin"></param>
+        /// <param name="yOrN">是点赞，还是取消赞</param>
+        /// <returns></returns>
+        public int Like(WeiboLogin wbLogin, bool yOrN)
         {
+            if (IsLike == yOrN)
+            {
+                return -2;
+            }
+
             try
             {
                 string url = "http://weibo.com/aj/v6/like/add?ajwvr=6";

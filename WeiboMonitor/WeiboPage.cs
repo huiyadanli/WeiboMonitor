@@ -166,8 +166,14 @@ namespace WeiboMonitor
                     string username = feedListItem.SelectSingleNode("div[1]/div[@class='WB_detail']/div[1]/a[1]").InnerHtml;
                     string time = feedListItem.SelectSingleNode("div[1]/div[@class='WB_detail']/div[2]/a[1]").Attributes["title"].Value;
                     string content = feedListItem.SelectSingleNode("div[1]/div[@class='WB_detail']/div[3]").InnerHtml;
+                    string likeStatus = feedListItem.SelectSingleNode("div[@class='WB_feed_handle']/div/ul/li[4]/a/span/span/span/i").Attributes["class"].Value;
+                    bool isLike = false;
+                    if(likeStatus.IndexOf("_bc")>0)
+                    {
+                        isLike = true;
+                    }
 
-                    WeiboFeed wbFeedTmp = new WeiboFeed(this, mid, username, time, content);
+                    WeiboFeed wbFeedTmp = new WeiboFeed(this, mid, username, time, content, isLike);
                     wbFeedList.Add(wbFeedTmp);
                 }
             }
@@ -183,7 +189,7 @@ namespace WeiboMonitor
         public List<WeiboFeed> Compare(List<WeiboFeed> oldFeedList)
         {
             // 自身没有抓取到微博时直接返回null
-            if(wbFeedList == null)
+            if (wbFeedList == null || wbFeedList.Count == 0)
             {
                 return null;
             }
