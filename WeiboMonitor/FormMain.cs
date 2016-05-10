@@ -13,7 +13,8 @@ namespace WeiboMonitor
     {
         private WeiboLogin wbLogin;
         private bool isLogin = false;
-        MonitorTimer mTimer;
+        private MonitorTimer mTimer;
+        private int[] restTime = new int[2];
 
         public FormMain()
         {
@@ -24,13 +25,28 @@ namespace WeiboMonitor
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            if (txtUsername.Text.Trim() != "" && txtPassword.Text.Trim() != "" && txtUID.Text.Trim() != "" && txtInterval.Text.Trim() != "")
+            if (txtUsername.Text.Trim() != "" && txtPassword.Text.Trim() != "" && txtUID.Text.Trim() != "" && txtInterval.Text.Trim() != "" && GetRestTime())
             {
                 bgwLogin.RunWorkerAsync();
             }
             else
             {
-                MessageBox.Show("请填写完信息再登录！", "提示");
+                MessageBox.Show("请填写完正确的信息再登录！", "提示");
+            }
+        }
+
+        private bool GetRestTime()
+        {
+            try
+            {
+                string[] t = txtRestTime.Text.Split('~');
+                restTime[0] = Convert.ToInt32(t[0]);
+                restTime[1] = Convert.ToInt32(t[1]);
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
 
@@ -40,6 +56,7 @@ namespace WeiboMonitor
             SetEnabled(txtPassword, !isLogin);
             SetEnabled(txtUID, !isLogin);
             SetEnabled(txtInterval, !isLogin);
+            SetEnabled(txtRestTime, !isLogin);
             SetEnabled(btnStart, !isLogin);
         }
 
@@ -120,6 +137,11 @@ namespace WeiboMonitor
         {
             lock (this)
             {
+                if (DateTime.Now.Hour > restTime[0] && DateTime.Now.Hour < restTime[1])
+                {
+                    mTimer.Stop();
+                }
+
                 MonitorTimer t = (MonitorTimer)sender;
                 string html = wbLogin.Get("http://weibo.com/" + t.Uid + "?is_all=1");
                 WeiboPage newPage = new WeiboPage(html);
