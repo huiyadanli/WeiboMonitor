@@ -137,9 +137,9 @@ namespace WeiboMonitor
         {
             lock (this)
             {
-                if (DateTime.Now.Hour > restTime[0] && DateTime.Now.Hour < restTime[1])
+                if (DateTime.Now.Hour >= restTime[0] && DateTime.Now.Hour <= restTime[1])
                 {
-                    mTimer.Stop();
+                    return;
                 }
 
                 MonitorTimer t = (MonitorTimer)sender;
