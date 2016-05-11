@@ -35,6 +35,15 @@ namespace WeiboMonitor
             }
         }
 
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            rtbOutput.Text += "停止监控中..." + Environment.NewLine;
+            mTimer.Stop();
+            rtbOutput.Text += "监控已经停止" + Environment.NewLine;
+            isLogin = false;
+            SwitchControl(true);
+        }
+
         private bool GetRestTime()
         {
             try
@@ -283,5 +292,7 @@ namespace WeiboMonitor
             WindowState = FormWindowState.Normal;
             this.Focus();
         }
+
+
     }
 }

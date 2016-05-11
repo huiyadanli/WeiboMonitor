@@ -48,6 +48,7 @@
             this.chkForcedpin = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
             this.txtRestTime = new System.Windows.Forms.TextBox();
+            this.btnStop = new System.Windows.Forms.Button();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -200,12 +201,23 @@
             this.txtRestTime.TabIndex = 15;
             this.txtRestTime.Text = "2~6";
             // 
+            // btnStop
+            // 
+            this.btnStop.Location = new System.Drawing.Point(395, 93);
+            this.btnStop.Name = "btnStop";
+            this.btnStop.Size = new System.Drawing.Size(123, 23);
+            this.btnStop.TabIndex = 16;
+            this.btnStop.Text = "停止监控";
+            this.btnStop.UseVisualStyleBackColor = true;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+            // 
             // FormMain
             // 
             this.AcceptButton = this.btnStart;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(529, 324);
+            this.Controls.Add(this.btnStop);
             this.Controls.Add(this.txtRestTime);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.chkForcedpin);
@@ -251,6 +263,7 @@
         private System.Windows.Forms.CheckBox chkForcedpin;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtRestTime;
+        private System.Windows.Forms.Button btnStop;
     }
 }
 
