@@ -50,20 +50,20 @@ namespace WeiboMonitor
             }
         }
 
-        private void SwitchControl()
+        private void SwitchControl(bool s)
         {
-            SetEnabled(txtUsername, !isLogin);
-            SetEnabled(txtPassword, !isLogin);
-            SetEnabled(txtUID, !isLogin);
-            SetEnabled(txtInterval, !isLogin);
-            SetEnabled(txtRestTime, !isLogin);
-            SetEnabled(btnStart, !isLogin);
+            SetEnabled(txtUsername, s);
+            SetEnabled(txtPassword, s);
+            SetEnabled(txtUID, s);
+            SetEnabled(txtInterval, s);
+            SetEnabled(txtRestTime, s);
+            SetEnabled(btnStart, s);
         }
 
         private void bgwLogin_DoWork(object sender, DoWorkEventArgs e)
         {
             isLogin = false;
-            SwitchControl();
+            SwitchControl(false);
             string result = "登陆失败，未知错误";
 
             try
@@ -98,7 +98,7 @@ namespace WeiboMonitor
             {
                 // 开启timer监控页面
                 isLogin = true;
-                SwitchControl();
+                SwitchControl(!isLogin);
                 SetText(rtbOutput, "模拟登陆成功" + Environment.NewLine);
                 try
                 {
@@ -111,7 +111,7 @@ namespace WeiboMonitor
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "提示");
-                    SwitchControl();
+                    SwitchControl(!isLogin);
                 }
             }
             else if (result == "2070")
@@ -130,7 +130,7 @@ namespace WeiboMonitor
             {
                 MessageBox.Show(result, "提示");
             }
-            SwitchControl();
+            SwitchControl(!isLogin);
         }
 
         private void mTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
