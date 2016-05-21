@@ -21,6 +21,13 @@ namespace WeiboMonitor
             InitializeComponent();
             rtbOutput.Text = "项目地址：https://github.com/huiyadanli/WeiboMonitor" + Environment.NewLine
                 + "刷新时间间隔不宜太小，否则可能会出现账号异常的情况" + Environment.NewLine;
+
+            txtUsername.Text = wbSetting.Default.Username;
+            txtPassword.Text = wbSetting.Default.Password;
+            txtInterval.Text = wbSetting.Default.Interval;
+            txtRestTime.Text = wbSetting.Default.RestTime;
+            txtUID.Text = wbSetting.Default.PageUID;
+            wbSetting.Default.Save();
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -28,6 +35,11 @@ namespace WeiboMonitor
             if (txtUsername.Text.Trim() != "" && txtPassword.Text.Trim() != "" && txtUID.Text.Trim() != "" && txtInterval.Text.Trim() != "" && GetRestTime())
             {
                 bgwLogin.RunWorkerAsync();
+                wbSetting.Default.Username = txtUsername.Text;
+                wbSetting.Default.Password = txtPassword.Text;
+                wbSetting.Default.Interval = txtInterval.Text;
+                wbSetting.Default.RestTime = txtRestTime.Text;
+                wbSetting.Default.PageUID = txtUID.Text;
             }
             else
             {
