@@ -105,12 +105,6 @@
     <Compile Include="MonitorTimer.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="wbSetting.cs" />
-    <Compile Include="wbSetting.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>wbSetting.settings</DependentUpon>
-    </Compile>
     <Compile Include="WeiboFeed.cs" />
     <Compile Include="WeiboPage.cs" />
     <Compile Include="Program.cs" />
@@ -157,10 +151,6 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="wbSetting.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>wbSetting.Designer.cs</LastGenOutput>
-    </None>
     <None Include="sinaSSOEncoder">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
