@@ -1,7 +1,7 @@
 # 微博秒赞器
 微博自动点赞，监控微博页面，新发微博秒赞。
 
-貌似用在女神身上不错（暴露我内心的想法了）
+（已失效）
 
 ## 界面
 ![界面](https://raw.githubusercontent.com/huiyadanli/WeiboMonitor/master/image/screenshot0.png)
